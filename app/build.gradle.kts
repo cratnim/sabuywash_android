@@ -29,24 +29,47 @@ android {
         create("profile") {
             initWith(getByName("debug"))
             isDebuggable = false
+            matchingFallbacks.add("release")
         }
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
+        isCoreLibraryDesugaringEnabled = true
     }
     kotlinOptions {
         jvmTarget = "11"
     }
     buildFeatures {
         compose = true
+        buildConfig = true
+    }
+    flavorDimensions.add("environment")
+    productFlavors {
+        create("local") {
+            dimension = "environment"
+            applicationIdSuffix = ".local"
+            versionNameSuffix = "-local"
+        }
+        create("dev") {
+            dimension = "environment"
+            applicationIdSuffix = ".dev"
+            versionNameSuffix = "-dev"
+        }
+        create("uat") {
+            dimension = "environment"
+            applicationIdSuffix = ".uat"
+            versionNameSuffix = "-uat"
+        }
+        create("prod") {
+            dimension = "environment"
+        }
     }
 }
 
 dependencies {
-    debugImplementation("com.example.smilewash_module:flutter_debug:1.0")
-    add("profileImplementation", "com.example.smilewash_module:flutter_profile:1.0")
-    releaseImplementation("com.example.smilewash_module:flutter_release:1.0")
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.4")
+    implementation(project(":flutter"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

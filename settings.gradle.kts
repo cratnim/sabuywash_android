@@ -18,12 +18,6 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
 
-        // Add Flutter module AAR repository
-        maven {
-            url = uri("${rootProject.projectDir}/../wash-app/build/host/outputs/repo")
-        }
-
-        // Add Flutter storage repository for engine dependencies
         maven {
             url = uri("https://storage.googleapis.com/download.flutter.io")
         }
@@ -32,3 +26,12 @@ dependencyResolutionManagement {
 
 rootProject.name = "testIntegrateUI"
 include(":app")
+
+val flutterProjectRoot = File(settingsDir.parentFile, "wash-app")
+val includeFlutterScript = File(flutterProjectRoot, ".android/include_flutter.groovy")
+
+if (includeFlutterScript.exists()) {
+    apply(from = includeFlutterScript)
+} else {
+    throw GradleException("Flutter Not Found: ${includeFlutterScript.absolutePath}")
+}

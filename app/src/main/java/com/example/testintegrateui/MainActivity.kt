@@ -13,11 +13,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.testintegrateui.ui.theme.TestIntegrateUITheme
+
 import io.flutter.embedding.android.FlutterActivity
+import io.flutter.embedding.engine.FlutterEngine
+import io.flutter.embedding.engine.FlutterEngineCache
+import io.flutter.embedding.engine.dart.DartExecutor
 
 class MainActivity : ComponentActivity() {
+    private val FLUTTER_ENGINE_ID = "my_flutter_engine"
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setupFlutterEngine()
         enableEdgeToEdge()
         setContent {
             TestIntegrateUITheme {
@@ -25,13 +32,32 @@ class MainActivity : ComponentActivity() {
                     MainScreen(
                         modifier = Modifier.padding(innerPadding),
                         onOpenFlutter = {
-                            // Use explicit Intent instead
-                            val intent = Intent(this, FlutterActivity::class.java)
-                            startActivity(intent)
+                            startActivity(
+                                FlutterActivity
+                                    .withCachedEngine(FLUTTER_ENGINE_ID)
+                                    .build(this)
+                            )
                         }
                     )
                 }
             }
+        }
+    }
+
+    private fun setupFlutterEngine() {
+        if (FlutterEngineCache.getInstance().get(FLUTTER_ENGINE_ID) == null) {
+
+            val currentFlavor = BuildConfig.FLAVOR
+            println("🔥 Connecting to Flutter with Flavor: $currentFlavor")
+
+            val flutterEngine = FlutterEngine(this)
+
+            flutterEngine.dartExecutor.executeDartEntrypoint(
+                DartExecutor.DartEntrypoint.createDefault(),
+                listOf(currentFlavor)
+            )
+
+            FlutterEngineCache.getInstance().put(FLUTTER_ENGINE_ID, flutterEngine)
         }
     }
 }
