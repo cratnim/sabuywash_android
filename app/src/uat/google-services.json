@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "85548905693",
+    "project_id": "sabuy-wash-uat",
+    "storage_bucket": "sabuy-wash-uat.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:85548905693:android:0e83a09f627b3f37129734",
+        "android_client_info": {
+          "package_name": "com.sabuywash.sabuywashapp.uat"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD9RfytKcML5bY0OyFAfo20W4Nsyc_ekqk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

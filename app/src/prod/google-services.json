@@ -1,0 +1,63 @@
+{
+  "project_info": {
+    "project_number": "930284239810",
+    "project_id": "sabuy-wash",
+    "storage_bucket": "sabuy-wash.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:930284239810:android:9739285d444e4576a7745b",
+        "android_client_info": {
+          "package_name": "com.sabuywash.sabuywashapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "930284239810-h871u78tcbuiq7fc1rlvlemvj2ntvvi0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.sabuywash.sabuywashapp",
+            "certificate_hash": "43e43d761ea584f5977eb5fa634c27387ce07831"
+          }
+        },
+        {
+          "client_id": "930284239810-qfegevgek54unr3ifvdun9p5jc31aau2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.sabuywash.sabuywashapp",
+            "certificate_hash": "b57fb31aca74712cc3639e399b761a9378b0cd72"
+          }
+        },
+        {
+          "client_id": "930284239810-ar7203r7r39gubju19jbtek3ui3j4al7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBvDiQYPTbdTBSRcbayaXDIDCbe-j9pBmM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "930284239810-ar7203r7r39gubju19jbtek3ui3j4al7.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "930284239810-aintp2j529ng0hon3q5sp8nnguqm9k28.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.sabuywash.sabuywashapp",
+                "app_store_id": "1659660313"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
