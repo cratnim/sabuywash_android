@@ -5,6 +5,12 @@ plugins {
     id("com.google.gms.google-services")
 }
 
+val apiKeyProperties = Properties()
+val apiKeyPropertiesFile = rootProject.file("api-key.properties")
+if (apiKeyPropertiesFile.exists()) {
+    apiKeyProperties.load(FileInputStream(apiKeyPropertiesFile))
+}
+
 android {
     namespace = "com.example.testintegrateui"
     compileSdk = 36
@@ -45,25 +51,32 @@ android {
         compose = true
         buildConfig = true
     }
-    flavorDimensions.add("environment")
+    flavorDimensions += "env"
+    
     productFlavors {
         create("local") {
-            dimension = "environment"
-            applicationIdSuffix = ".local"
-            versionNameSuffix = "-local"
+            dimension = "env"
+            applicationId = "com.sabuywash.sabuywashapp.local"
+            // ใช้ ["key"] = value แทน .key = value
+            manifestPlaceholders["googleApiKey"] = apiKeyProperties["LOCAL_GOOGLE_API_KEY"] as String
         }
+
         create("dev") {
-            dimension = "environment"
-            applicationIdSuffix = ".development"
-            versionNameSuffix = "-dev"
+            dimension = "env"
+            applicationId = "com.sabuywash.sabuywashapp.development"
+            manifestPlaceholders["googleApiKey"] = apiKeyProperties["DEV_GOOGLE_API_KEY"] as String
         }
+
         create("uat") {
-            dimension = "environment"
-            applicationIdSuffix = ".uat"
-            versionNameSuffix = "-uat"
+            dimension = "env"
+            applicationId = "com.sabuywash.sabuywashapp.uat"
+            manifestPlaceholders["googleApiKey"] = apiKeyProperties["UAT_GOOGLE_API_KEY"] as String
         }
+
         create("prod") {
-            dimension = "environment"
+            dimension = "env"
+            applicationId = "com.sabuywash.sabuywashapp"
+            manifestPlaceholders["googleApiKey"] = apiKeyProperties["PROD_GOOGLE_API_KEY"] as String
         }
     }
 }
