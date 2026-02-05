@@ -24,7 +24,6 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setupFlutterEngine()
         enableEdgeToEdge()
         setContent {
             TestIntegrateUITheme {
@@ -32,11 +31,7 @@ class MainActivity : ComponentActivity() {
                     MainScreen(
                         modifier = Modifier.padding(innerPadding),
                         onOpenFlutter = {
-                            startActivity(
-                                FlutterActivity
-                                    .withCachedEngine(FLUTTER_ENGINE_ID)
-                                    .build(this)
-                            )
+                            startFlutterWithArguments()
                         }
                     )
                 }
@@ -44,21 +39,28 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    private fun setupFlutterEngine() {
-        if (FlutterEngineCache.getInstance().get(FLUTTER_ENGINE_ID) == null) {
+    private fun startFlutterWithArguments() {
+        val currentFlavor = BuildConfig.FLAVOR
+        android.util.Log.d("FlavorCheck", "Android Native Flavor: $currentFlavor")
+        val flutterEngine = FlutterEngine(this)
 
-            val currentFlavor = BuildConfig.FLAVOR
-            println("🔥 Connecting to Flutter with Flavor: $currentFlavor")
+        flutterEngine.dartExecutor.executeDartEntrypoint(
+            DartExecutor.DartEntrypoint.createDefault(),
+            listOf(currentFlavor)
+        )
 
-            val flutterEngine = FlutterEngine(this)
+        FlutterEngineCache.getInstance().put(FLUTTER_ENGINE_ID, flutterEngine)
 
-            flutterEngine.dartExecutor.executeDartEntrypoint(
-                DartExecutor.DartEntrypoint.createDefault(),
-                listOf(currentFlavor)
-            )
+        startActivity(
+            FlutterActivity
+                .withCachedEngine(FLUTTER_ENGINE_ID)
+                .build(this)
+        )
+    }
 
-            FlutterEngineCache.getInstance().put(FLUTTER_ENGINE_ID, flutterEngine)
-        }
+    override fun onDestroy() {
+        super.onDestroy()
+        FlutterEngineCache.getInstance().remove(FLUTTER_ENGINE_ID)
     }
 }
 
