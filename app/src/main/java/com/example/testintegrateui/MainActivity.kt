@@ -18,8 +18,10 @@ import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.embedding.engine.FlutterEngineCache
 import io.flutter.embedding.engine.dart.DartExecutor
+import io.flutter.plugin.common.MethodChannel
 
 class MainActivity : ComponentActivity() {
+    private val SSO_CHANNEL = "com.smilewash.app/sso"
     private val FLUTTER_ENGINE_ID = "my_flutter_engine"
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,6 +46,8 @@ class MainActivity : ComponentActivity() {
         android.util.Log.d("FlavorCheck", "Android Native Flavor: $currentFlavor")
         val flutterEngine = FlutterEngine(this)
 
+        setupSSOMethodChannel(flutterEngine)
+
         flutterEngine.dartExecutor.executeDartEntrypoint(
             DartExecutor.DartEntrypoint.createDefault(),
             listOf(currentFlavor)
@@ -56,6 +60,27 @@ class MainActivity : ComponentActivity() {
                 .withCachedEngine(FLUTTER_ENGINE_ID)
                 .build(this)
         )
+    }
+
+    private fun setupSSOMethodChannel(flutterEngine: FlutterEngine) {
+        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, SSO_CHANNEL)
+            .setMethodCallHandler { call, result ->
+                if (call.method == "getSuperAppToken") {
+                    handleGetToken(result)
+                } else {
+                    result.notImplemented()
+                }
+            }
+    }
+
+    private fun handleGetToken(result: MethodChannel.Result) {
+        val tokenData = mapOf(
+            "access_token" to "your_actual_access_token_here",
+            "refresh_token" to "your_actual_refresh_token_here",
+            "access_token_expires_in" to 3600
+        )
+        
+        result.success(tokenData)
     }
 
     override fun onDestroy() {
