@@ -65,7 +65,7 @@ class MainActivity : ComponentActivity() {
     private fun setupSSOMethodChannel(flutterEngine: FlutterEngine) {
         MethodChannel(flutterEngine.dartExecutor.binaryMessenger, SSO_CHANNEL)
             .setMethodCallHandler { call, result ->
-                if (call.method == "getSuperAppToken") {
+                if (call.method == "getAuthentikToken") {
                     handleGetToken(result)
                 } else {
                     result.notImplemented()
@@ -74,13 +74,8 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun handleGetToken(result: MethodChannel.Result) {
-        val tokenData = mapOf(
-            "access_token" to "your_actual_access_token_here",
-            "refresh_token" to "your_actual_refresh_token_here",
-            "access_token_expires_in" to 3600
-        )
-        
-        result.success(tokenData)
+        val latestToken = "latest_authentik_token"
+        result.success(mapOf("authentik_token" to latestToken))
     }
 
     override fun onDestroy() {
