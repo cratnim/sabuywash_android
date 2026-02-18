@@ -67,6 +67,9 @@ class MainActivity : ComponentActivity() {
             .setMethodCallHandler { call, result ->
                 if (call.method == "getAuthentikToken") {
                     handleGetToken(result)
+                } else if (call.method == "getLocale") {
+                    val currentLocale = Locale.getDefault().language ?? "th"
+                    result.success(currentLocale)
                 } else {
                     result.notImplemented()
                 }
